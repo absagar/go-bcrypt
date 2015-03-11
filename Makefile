@@ -4,7 +4,7 @@
 
 include $(GOROOT)/src/Make.inc
 
-TARG = bitbucket.org/zoowar/bcrypt
+TARG = github.com/sagar23jan/bcrypt
 
 CGOFILES = \
         bcrypt.go \

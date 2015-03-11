@@ -7,7 +7,7 @@ Example use::
 
   import (
         "fmt"
-        "bitbucket.org/zoowar/bcrypt"
+        "github.com/sagar23jan/bcrypt"
   )
 
   var password     = "WyWihatdyd?frub1"

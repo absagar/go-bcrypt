@@ -34,7 +34,7 @@ import "C"
 
 import (
 	"crypto/rand"
-	"os"
+	"errors"
 	"unsafe"
 )
 
@@ -47,8 +47,8 @@ const (
 )
 
 var (
-	InvalidRounds = os.NewError("invalid rounds")
-	InvalidSalt   = os.NewError("invalid salt")
+	InvalidRounds = errors.New("invalid rounds")
+	InvalidSalt   = errors.New("invalid salt")
 )
 
 // Hash generates an encrypted hash of the unencrypted password
@@ -58,13 +58,13 @@ var (
 //
 // Returns the Blowfish encrypted password.
 //
-func Hash(password string, salt ...string) (hash string, err os.Error) {
+func Hash(password string, salt ...string) (hash string, err error) {
 	var s string
 	if len(salt) == 0 {
-		var err os.Error
+		var err error
 		s, err = Salt(12)
 		if err != nil {
-			return
+			return "", err
 		}
 	} else {
 		s = salt[0]
@@ -83,7 +83,7 @@ func Hash(password string, salt ...string) (hash string, err os.Error) {
 
 // HashBytes provides a []byte based wrapper to Hash.
 //
-func HashBytes(password []byte, salt ...[]byte) (hash []byte, err os.Error) {
+func HashBytes(password []byte, salt ...[]byte) (hash []byte, err error) {
 	var s string
 	if len(salt) == 0 {
 		s, err = Hash(string(password))
@@ -120,7 +120,7 @@ func MatchBytes(password, hash []byte) bool {
 //
 // Returns a random salt.
 //
-func Salt(rounds ...int) (salt string, err os.Error) {
+func Salt(rounds ...int) (salt string, err error) {
 	r := DefaultRounds
 	if len(rounds) > 0 {
 		// ensure the "rounds" parameter is valid.
@@ -130,7 +130,7 @@ func Salt(rounds ...int) (salt string, err os.Error) {
 		}
 	}
 
-	// generate and verify a random salt number 
+	// generate and verify a random salt number
 	rs := make([]byte, RandomSaltLen)
 	n, err := rand.Read(rs)
 	if err != nil {
@@ -151,7 +151,7 @@ func Salt(rounds ...int) (salt string, err os.Error) {
 
 // SaltBytes provides a []byte based wrapper to Salt.
 //
-func SaltBytes(rounds int) (salt []byte, err os.Error) {
+func SaltBytes(rounds int) (salt []byte, err error) {
 	b, err := Salt(rounds)
 	return []byte(b), err
 }
