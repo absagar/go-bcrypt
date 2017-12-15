@@ -1,3 +1,5 @@
+*This package uses cgo. Use golang.org/x/crypto/bcrypt instead now.*
+
 Quick Start
 ===========
 
@@ -7,7 +9,7 @@ Example use::
 
   import (
         "fmt"
-        "github.com/sagar23jan/bcrypt"
+        "github.com/absagar/bcrypt"
   )
 
   var password     = "WyWihatdyd?frub1"
